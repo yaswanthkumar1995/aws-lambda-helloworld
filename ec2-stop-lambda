@@ -13,29 +13,29 @@ ec = boto3.client('ec2')
 
 def lambda_handler(event, context):
 
-reservations = ec.describe_instances(
-Filters=[
-{'Name' : 'tag:EC2startstop', 'Values' : ['YES','yes','Yes']},
-]
-).get(
-'Reservations', []
-)
+    reservations = ec.describe_instances(
+    Filters=[
+    {'Name' : 'tag:EC2stop7-30pm', 'Values' : ['YES','yes','Yes']},
+    ]
+    ).get(
+    'Reservations', []
+    )
 
 
 
-instances = sum(
-[
-[i for i in r['Instances']]
-for r in reservations
-], [])
+    instances = sum(
+    [
+    [i for i in r['Instances']]
+    for r in reservations
+    ], [])
 
 
 
-print ("Found %d instances those are going to stop" % len(instances))
-for instance in instances:
-InstID = instance['InstanceId']
-print ("Stopping instance " + str(InstID))
-ec.stop_instances(InstanceIds = [InstID])
-#print ("Instances to be started " + str(InstID))
-#print ("Instances : " + str(instances))
-print ("Instances TAG : " + str(instance['Tags']))
+    print ("Found %d instances those are going to stop" % len(instances))
+    for instance in instances:
+        InstID = instance['InstanceId']
+        print ("Stopping instance " + str(InstID))
+        ec.stop_instances(InstanceIds = [InstID])
+        #print ("Instances to be started " + str(InstID))
+        #print ("Instances : " + str(instances))
+        print ("Instances TAG : " + str(instance['Tags']))
